@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Location - Farmer Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background-color: #f4f6f9;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .sidebar {
+      width: 250px;
+      height: 100vh;
+      position: fixed;
+      background-color: #212529;
+      color: white;
+      padding-top: 30px;
+    }
+
+    .sidebar h4 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-weight: bold;
+      color: red;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 12px 30px;
+      color: #d1d1d1;
+      text-decoration: none;
+    }
+
+    .sidebar a:hover,
+    .sidebar a.active {
+      background-color: #343a40;
+      color: white;
+    }
+
+    .content {
+      margin-left: 250px;
+      padding: 20px 40px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fff;
+      padding: 15px 20px;
+      border-radius: 10px;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+
+    .location-cards .card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      text-align: center;
+    }
+
+    .search-bar {
+      max-width: 400px;
+    }
+
+    .table-wrapper {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+    }
+  </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+  <h4>MEAT KING</h4>
+  <a href="farmer.html">Dashboard</a>
+  <a href="livestock.html">Livestock</a>
+  <a href="order.html">Order</a>
+  <a href="location.html" class="active">Location</a>
+</div>
+
+<!-- Main Content -->
+<div class="content">
+  <!-- Topbar -->
+  <div class="topbar">
+    <h5>Location Information</h5>
+    <span><strong>Rabeya</strong>
+      <img src="file:///C:/Users/User/Desktop/dbms/MEAT%20KING/img/user2.jpg" alt="Rabeya" class="rounded-circle me-lg-2" style="width: 40px; height: 40px;">
+    </span>
+  </div>
+
+  <!-- Location Cards -->
+  <div class="row location-cards mb-4">
+    <div class="col-md-6 col-lg-4">
+      <div class="card p-3">
+        <h6>Storage Location</h6>
+        <p class="fs-5 text-primary" id="storageLocationCount">0</p>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-4">
+      <div class="card p-3">
+        <h6>Wholesaler Location</h6>
+        <p class="fs-5 text-primary" id="wholesalerLocationCount">0</p>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-4">
+      <div class="card p-3">
+        <h6>Retailer Location</h6>
+        <p class="fs-5 text-primary" id="retailerLocationCount">0</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form + Table -->
+  <div class="table-wrapper">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h5>Add New Location</h5>
+      <input type="text" class="form-control search-bar" id="locationSearch" placeholder="Search Locations..." onkeyup="filterLocationTable()">
+    </div>
+
+    <form id="locationForm" class="row g-3 mb-4">
+      <div class="col-md-4">
+        <input type="text" class="form-control" id="locationName" placeholder="Location Name" required>
+      </div>
+      <div class="col-md-4">
+        <input type="text" class="form-control" id="locationType" placeholder="Location Type (Storage, Wholesaler, Retailer)" required>
+      </div>
+      <div class="col-md-4">
+        <input type="text" class="form-control" id="locationAddress" placeholder="Location Address" required>
+      </div>
+      <div class="col-12 text-end">
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </form>
+
+    <table class="table table-bordered" id="locationTable">
+      <thead class="table-light">
+        <tr>
+          <th>Location Name</th>
+          <th>Location Type</th>
+          <th>Location Address</th>
+          <th class="text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="locationTableBody">
+        <tr>
+          <td>Storage A</td>
+          <td>Storage</td>
+          <td>123 Main St</td>
+          <td class="text-center">
+            <button class="btn btn-sm btn-warning me-1" onclick="editLocationRow(this)">Edit</button>
+            <button class="btn btn-sm btn-success me-1 d-none" onclick="saveLocationRow(this)">Save</button>
+            <button class="btn btn-sm btn-danger" onclick="deleteLocationRow(this)">Delete</button>
+          </td>
+        </tr>
+        <tr>
+          <td>Wholesaler B</td>
+          <td>Wholesaler</td>
+          <td>456 Oak Rd</td>
+          <td class="text-center">
+            <button class="btn btn-sm btn-warning me-1" onclick="editLocationRow(this)">Edit</button>
+            <button class="btn btn-sm btn-success me-1 d-none" onclick="saveLocationRow(this)">Save</button>
+            <button class="btn btn-sm btn-danger" onclick="deleteLocationRow(this)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  function filterLocationTable() {
+    const input = document.getElementById("locationSearch").value.toLowerCase();
+    const rows = document.querySelectorAll("#locationTable tbody tr");
+    rows.forEach(row => {
+      const text = row.textContent.toLowerCase();
+      row.style.display = text.includes(input) ? "" : "none";
+    });
+  }
+
+  function editLocationRow(btn) {
+    const row = btn.closest("tr");
+    row.querySelectorAll("td").forEach((td, i) => {
+      if (i < 3) td.contentEditable = "true";
+    });
+    btn.classList.add("d-none");
+    row.querySelector(".btn-success").classList.remove("d-none");
+  }
+
+  function saveLocationRow(btn) {
+    const row = btn.closest("tr");
+    row.querySelectorAll("td").forEach((td, i) => {
+      if (i < 3) td.contentEditable = "false";
+    });
+    btn.classList.add("d-none");
+    row.querySelector(".btn-warning").classList.remove("d-none");
+    updateLocationCount();
+  }
+
+  function deleteLocationRow(btn) {
+    btn.closest("tr").remove();
+    updateLocationCount();
+  }
+
+  document.getElementById("locationForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const name = document.getElementById("locationName").value;
+    const type = document.getElementById("locationType").value;
+    const address = document.getElementById("locationAddress").value;
+
+    const tableBody = document.getElementById("locationTableBody");
+    const newRow = document.createElement("tr");
+    newRow.innerHTML = `
+      <td>${name}</td>
+      <td>${type}</td>
+      <td>${address}</td>
+      <td class="text-center">
+        <button class="btn btn-sm btn-warning me-1" onclick="editLocationRow(this)">Edit</button>
+        <button class="btn btn-sm btn-success me-1 d-none" onclick="saveLocationRow(this)">Save</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteLocationRow(this)">Delete</button>
+      </td>
+    `;
+    tableBody.appendChild(newRow);
+    document.getElementById("locationForm").reset();
+    updateLocationCount();
+  });
+
+  function updateLocationCount() {
+    let storage = 0, wholesaler = 0, retailer = 0;
+    document.querySelectorAll("#locationTableBody tr").forEach(row => {
+      const type = row.children[1].textContent.trim().toLowerCase();
+      if (type === "storage") storage++;
+      if (type === "wholesaler") wholesaler++;
+      if (type === "retailer") retailer++;
+    });
+    document.getElementById("storageLocationCount").textContent = storage;
+    document.getElementById("wholesalerLocationCount").textContent = wholesaler;
+    document.getElementById("retailerLocationCount").textContent = retailer;
+  }
+
+  // Initial count
+  updateLocationCount();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
