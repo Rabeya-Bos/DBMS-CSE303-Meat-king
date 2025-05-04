@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Livestock Expansion</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1c1c1c;
+      color: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #8B0000;
+      padding: 20px;
+      text-align: center;
+    }
+    header h1 {
+      color: #fff;
+    }
+    .container {
+      padding: 30px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background-color: #2c2c2c;
+    }
+    th, td {
+      border: 1px solid #444;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #A52A2A;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      background-color: #444;
+      color: #fff;
+      border: none;
+    }
+    button {
+      background-color: #A52A2A;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Livestock Expansion Dashboard</h1>
+  </header>
+
+  <div class="container">
+    <h2>Add New Expansion Recommendation</h2>
+    <form>
+      <div class="form-group">
+        <label for="farmer">Select Farmer:</label>
+        <select id="farmer" name="farmer">
+          <option value="1">Farmer A</option>
+          <option value="2">Farmer B</option>
+          <!-- Dynamically populate from database -->
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="recommendation">Recommended Livestock Number:</label>
+        <input type="number" id="recommendation" name="recommendation" required>
+      </div>
+      <button type="submit">Submit</button>
+    </form>
+
+    <h2>Existing Expansion Records</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Farmer Name</th>
+          <th>Location</th>
+          <th>Recommended Livestock</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Farmer A</td>
+          <td>Area X</td>
+          <td>150</td>
+        </tr>
+        <tr>
+          <td>Farmer B</td>
+          <td>Area Y</td>
+          <td>200</td>
+        </tr>
+        <!-- Rows would be populated from backend -->
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
