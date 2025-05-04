@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <meta name="description" content="">
+        <meta name="author" content="Tooplate">
+
+        <title>Mini Finance Dashboard Template</title>
+
+        <!-- CSS FILES -->      
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+        <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;700&display=swap" rel="stylesheet">
+
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+
+        <link href="css/bootstrap-icons.css" rel="stylesheet">
+
+        <link href="css/apexcharts.css" rel="stylesheet">
+
+        <link href="css/tooplate-mini-finance.css" rel="stylesheet">
+<!--
+
+Tooplate 2135 Mini Finance
+
+https://www.tooplate.com/view/2135-mini-finance
+
+Bootstrap 5 Dashboard Admin Template
+
+-->   
+
+   
+        </header>
+
+        <div class="container-fluid">
+            <div class="row">
+                <nav id="sidebarMenu" class="col-md-3 col-lg-3 d-md-block sidebar collapse">
+                    <div class="position-sticky py-4 px-3 sidebar-sticky">
+                        <ul class="nav flex-column h-100">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="index.html">
+                                    <i class="bi-house-fill me-2"></i>
+                                    Real Time Supply Level 
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="wallet.html">
+                                    <i class="bi-wallet me-2"></i>
+                                    Inventory
+                                </a>
+                            </li>
+
+                            
+                        
+
+                            
+
+                           
+                        </ul>
+                    </div>
+                </nav>
+
+                <main class="main-wrapper col-md-9 ms-sm-auto py-4 col-lg-9 px-md-4 border-start">
+                    <div class="title-group mb-3">
+                        <h3 class="h2 mb-0">Inventory Management</h3>
+
+                    </div>
+
+                    
+
+
+                        </header>
+
+                            <div class="container-fluid">
+                            <div class="row">
+                                <nav id="sidebarMenu" class="col-md-3 col-lg-3 d-md-block sidebar collapse">
+                                    <div class="position-sticky py-4 px-3 sidebar-sticky">
+                                        <ul class="nav flex-column h-100">
+                                            <li class="nav-item">
+                                                <a class="nav-link" aria-current="page" href="index.html">
+                                                    <i class="bi-house-fill me-2"></i>
+                                                    Real Time Supply Level
+                                                </a>
+                                            </li>
+                
+                                            <li class="nav-item">
+                                                <a class="nav-link active" href="wallet.html">
+                                                    <i class="bi-wallet me-2"></i>
+                                                    Inventory Data
+                                                </a>
+                                            </li>
+
+                                            
+                
+                                            
+                
+                                           
+                                           
+                
+                                            
+                                    </div>
+                                </nav>
+                
+                                <div class="table-responsive">
+                                    <table class="account-table table" style="font-size: 18px; width: 100%;">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Product ID</th>
+                                                <th scope="col">Product Name</th>
+                                                <th scope="col">Storage Quantity</th>
+                                                <th scope="col">Delevery status</th>
+                                                <th scope="col">Location</th>
+                                                <th scope="col">Action</th>
+                                            </tr>
+                                        </thead>
+                                
+                                        <tbody>
+                                            <tr>
+                                                <td scope="row">1</td>
+                                                <td scope="row">Beef</td>
+                                                <td scope="row">500kg</td>
+                                                <td scope="row">Delevered</td>
+                                                <td scope="row">Dhaka</td>
+                                                <td><button class="btn btn-warning btn-sm">Edit</button> <button class="btn btn-danger btn-sm">Delete</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td scope="row">2</td>
+                                                <td scope="row">Chicken</td>
+                                                <td scope="row">500kg</td>
+                                                <td scope="row">Delevered</td>
+                                                <td scope="row">Dhaka</td>
+                                                <td><button class="btn btn-warning btn-sm">Edit</button> <button class="btn btn-danger btn-sm">Delete</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td scope="row">3</td>
+                                                <td scope="row">Lamb</td>
+                                                <td scope="row">250kg</td>
+                                                <td scope="row">Not Delivered</td>
+                                                <td scope="row">Dhaka</td>
+                                                <td><button class="btn btn-warning btn-sm">Edit</button> <button class="btn btn-danger btn-sm">Delete</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td scope="row">4</td>
+                                                <td scope="row">Duck</td>
+                                                <td scope="row">250kg</td>
+                                                <td scope="row">Delevered</td>
+                                                <td scope="row">Cumilla</td>
+                                                <td><button class="btn btn-warning btn-sm">Edit</button> <button class="btn btn-danger btn-sm">Delete</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td scope="row">5</td>
+                                                <td scope="row">Mutton</td>
+                                                <td scope="row">300kg</td>
+                                                <td scope="row">Not Delevered</td>
+                                                <td scope="row">Khulna</td>
+                                                <td><button class="btn btn-warning btn-sm">Edit</button> <button class="btn btn-danger btn-sm">Delete</button></td>
+                                            </tr>        
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="custom-block bg-white">
+                                    <h5 class="mb-4">History of Storage Capacity</h5>
+    
+                                    <div id="pie-chart"></div>
+                                </div>
+    
+                                <div class="custom-block bg-white">
+                                    <div id="chart"></div>
+                                </div>
+                                
+                            
+        <!-- JAVASCRIPT FILES -->
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.bundle.min.js"></script>
+        <script src="js/apexcharts.min.js"></script>
+        <script src="js/custom.js"></script>
+
+        <script type="text/javascript">
+          var options = {
+  series: [30, 43, 22],
+  chart: {
+    width: 580,
+    type: 'pie',
+  },
+  labels: ['Total Storage', 'Current Storage', 'Available Storage'],
+  dataLabels: {
+    style: {
+      fontSize: '18px', // <-- make data labels bigger
+      fontWeight: 'bold'
+    }
+  },
+  legend: {
+    fontSize: '20px', // <-- make legend labels bigger
+    position: 'bottom'
+  },
+  responsive: [{
+    breakpoint: 480,
+    options: {
+      chart: {
+        width: 580
+      },
+      legend: {
+        position: 'bottom'
+      }
+    }
+  }]
+};
+
+
+            var chart = new ApexCharts(document.querySelector("#pie-chart"), options);
+            chart.render();
+        </script>
+
+        <script type="text/javascript">
+            var options = {
+              series: [{
+              name: 'Product',
+              data: [100, 150, 200, 175, 345,280, 300, 400,180]
+            }, {
+              name: 'Storage Quantity',
+              data: [100, 400, 300, 500, 200, 350, 400, 460, 375]
+            }, {
+              name: 'Stock nececity',
+              data: [100, 150, 200, 250, 300, 350, 400, 450,500]
+            }],
+              chart: {
+              type: 'bar',
+              height: 350
+            },
+            plotOptions: {
+              bar: {
+                horizontal: false,
+                columnWidth: '55%',
+                endingShape: 'rounded'
+              },
+            },
+            dataLabels: {
+              enabled: false
+            },
+            stroke: {
+              show: true,
+              width: 2,
+              colors: ['transparent']
+            },
+            xaxis: {
+              categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+            },
+            yaxis: {
+              title: {
+                text: 'Storage in Kg'
+              }
+            },
+            fill: {
+              opacity: 1
+            },
+            tooltip: {
+              y: {
+                formatter: function (val) {
+                  return " " + val + "Kg"
+                }
+              }
+            }
+            };
+
+            var chart = new ApexCharts(document.querySelector("#chart"), options);
+            chart.render();
+        </script>
+        
+
+    </body>
+</html>
