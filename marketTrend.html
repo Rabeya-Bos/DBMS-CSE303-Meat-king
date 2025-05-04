@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Market Prices & Trends</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      display: flex;
+    }
+    .sidebar {
+      width: 200px;
+      background-color: #000;
+      color: white;
+      height: 100vh;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .sidebar h2 {
+      color: white;
+    }
+    .sidebar ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    .sidebar li {
+      margin: 15px 0;
+    }
+    .content {
+      flex: 1;
+      padding: 20px;
+      background-color: white;
+      overflow-y: auto;
+      height: 100vh;
+    }
+    h1 {
+      margin-top: 0;
+      color: #333;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+    th {
+      background-color: #eee;
+    }
+    .form-container {
+      margin-bottom: 20px;
+    }
+    input, button {
+      margin: 5px;
+      padding: 8px;
+    }
+    #priceChart {
+      margin-top: 40px;
+      background-color: #fafafa;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+    }
+    button {
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+<div class="sidebar">
+  <h2 style="color: red;">Dashboard</h2>
+  <ul>
+    <li>Real-Time Supply</li>
+    <li><strong>Market Prices & Trends</strong></li>
+  </ul>
+</div>
+
+<div class="content">
+  <h1>Historical and Current Market Prices and Trends</h1>
+
+  <div class="form-container">
+    <input type="text" id="searchInput" placeholder="Search by Meat Type">
+    <br>
+    <input type="text" id="meatType" placeholder="Meat Type">
+    <input type="text" id="productId" placeholder="Product ID">
+    <input type="date" id="historicalDate" placeholder="Historical Date">
+    <input type="number" id="historicalPrice" placeholder="Historical Price ($)">
+    <input type="number" id="currentPrice" placeholder="Current Price ($)">
+    <button onclick="addRow()">Add</button>
+  </div>
+
+  <table id="marketTable">
+    <thead>
+      <tr>
+        <th>Meat Type</th>
+        <th>Product ID</th>
+        <th>Historical Date</th>
+        <th>Historical Price ($/kg)</th>
+        <th>Current Price ($/kg)</th>
+        <th>Trend (%)</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Dynamic rows here -->
+    </tbody>
+  </table>
+
+  <canvas id="priceChart" width="400" height="200"></canvas>
+</div>
+
+<script>
+  const tableBody = document.getElementById('marketTable').getElementsByTagName('tbody')[0];
+  const searchInput = document.getElementById('searchInput');
+  let chartInstance;
+
+  function addRow() {
+    const meatType = document.getElementById('meatType').value;
+    const productId = document.getElementById('productId').value;
+    const historicalDate = document.getElementById('historicalDate').value;
+    const historicalPrice = parseFloat(document.getElementById('historicalPrice').value);
+    const currentPrice = parseFloat(document.getElementById('currentPrice').value);
+
+    if (!meatType || !productId || !historicalDate || isNaN(historicalPrice) || isNaN(currentPrice)) {
+      alert('Please fill all fields correctly.');
+      return;
+    }
+
+    const trend = (((currentPrice - historicalPrice) / historicalPrice) * 100).toFixed(2);
+
+    const row = tableBody.insertRow();
+    row.innerHTML = `
+      <td>${meatType}</td>
+      <td>${productId}</td>
+      <td>${historicalDate}</td>
+      <td>${historicalPrice}</td>
+      <td>${currentPrice}</td>
+      <td>${trend}%</td>
+      <td>
+        <button onclick="editRow(this)">Edit</button>
+        <button onclick="deleteRow(this)">Delete</button>
+      </td>
+    `;
+
+    clearForm();
+    updateChart();
+  }
+
+  function deleteRow(btn) {
+    const row = btn.parentNode.parentNode;
+    tableBody.removeChild(row);
+    updateChart();
+  }
+
+  function editRow(btn) {
+    const row = btn.parentNode.parentNode;
+    document.getElementById('meatType').value = row.cells[0].innerText;
+    document.getElementById('productId').value = row.cells[1].innerText;
+    document.getElementById('historicalDate').value = row.cells[2].innerText;
+    document.getElementById('historicalPrice').value = row.cells[3].innerText;
+    document.getElementById('currentPrice').value = row.cells[4].innerText;
+    tableBody.removeChild(row);
+    updateChart();
+  }
+
+  function clearForm() {
+    document.getElementById('meatType').value = '';
+    document.getElementById('productId').value = '';
+    document.getElementById('historicalDate').value = '';
+    document.getElementById('historicalPrice').value = '';
+    document.getElementById('currentPrice').value = '';
+  }
+
+  function updateChart() {
+    const meatTypes = [];
+    const trends = [];
+
+    for (let i = 0; i < tableBody.rows.length; i++) {
+      meatTypes.push(tableBody.rows[i].cells[0].innerText);
+      const trendValue = parseFloat(tableBody.rows[i].cells[5].innerText.replace('%', ''));
+      trends.push(trendValue);
+    }
+
+    if (chartInstance) {
+      chartInstance.destroy();
+    }
+
+    const ctx = document.getElementById('priceChart').getContext('2d');
+    chartInstance = new Chart(ctx, {
+      type: 'bar',  // or 'line' if you want line graph
+      data: {
+        labels: meatTypes,
+        datasets: [{
+          label: 'Price Trend (%)',
+          backgroundColor: 'rgba(75, 192, 192, 0.7)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1,
+          data: trends
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  }
+
+  searchInput.addEventListener('input', function() {
+    const filter = this.value.toUpperCase();
+    const rows = tableBody.getElementsByTagName('tr');
+
+    for (let i = 0; i < rows.length; i++) {
+      const meatTypeCell = rows[i].getElementsByTagName('td')[0];
+      if (meatTypeCell) {
+        const textValue = meatTypeCell.textContent || meatTypeCell.innerText;
+        rows[i].style.display = textValue.toUpperCase().includes(filter) ? '' : 'none';
+      }
+    }
+  });
+</script>
+
+</body>
+</html>
