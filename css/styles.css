@@ -1,0 +1,61 @@
+:root {
+    --primary-color: #212529;
+    --secondary-color: #f8f9fa;
+    --accent-color: #dc3545;
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+}
+
+.product-card {
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.rating {
+    color: #ffc107;
+}
+
+.product-price {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.form-container {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.cart-item-img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+}
+
+.quantity-selector {
+    width: 80px;
+}
+
+.product-detail-img {
+    max-height: 400px;
+    object-fit: contain;
+}
+
+.profile-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.auth-container {
+    max-width: 400px;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+} 
