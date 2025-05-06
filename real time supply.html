@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-time Supply Analysis</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .sidebar {
+            width: 220px;
+            background-color: #000;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .sidebar h2 {
+            color: red;
+        }
+
+        .sidebar a {
+            color: #fff;
+            text-decoration: none;
+            display: block;
+            margin: 15px 0;
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+
+        .table-caption {
+            color: blue;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .action-buttons button {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <h2>Real-time Supply Analysis</h2>
+        <a href="#">Dashboard</a>
+        <a href="#">Reports</a>
+        <a href="#">Settings</a>
+    </div>
+
+    <div class="content">
+        <h3>Wholesaler Inventory</h3>
+        <input type="text" id="wholesalerSearch" onkeyup="searchTable('wholesalerTable', 'wholesalerSearch')" placeholder="Search..." class="form-control mb-3">
+        <table class="table table-bordered" id="wholesalerTable">
+            
+            <thead class="table-light">
+                <tr>
+                    <th>Wholesaler ID</th>
+                    <th>Storage ID</th>
+                    <th>Temperature (°C)</th>
+                    <th>Meat Type</th>
+                    <th>Product Quantity (kg)</th>
+                    <th>Retailer ID</th>
+                    <th>Selling Quantity (kg)</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="wholesalerBody">
+            </tbody>
+        </table>
+        <button class="btn btn-success mb-5" onclick="addRow('wholesalerBody', 'wholesaler')">Add New Wholesaler</button>
+
+        <h3>Retailer Inventory</h3>
+        <input type="text" id="retailerSearch" onkeyup="searchTable('retailerTable', 'retailerSearch')" placeholder="Search..." class="form-control mb-3">
+        <table class="table table-bordered" id="retailerTable">
+      
+            <thead class="table-light">
+                <tr>
+                    <th>Retailer ID</th>
+                    <th>Storage ID</th>
+                    <th>Temperature (°C)</th>
+                    <th>Product Quantity (kg)</th>
+                    <th>Meat Type</th>
+                    <th>Wholesaler ID (Supplier)</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="retailerBody">
+            </tbody>
+        </table>
+        <button class="btn btn-success" onclick="addRow('retailerBody', 'retailer')">Add New Retailer</button>
+    </div>
+
+    <script>
+        function searchTable(tableId, inputId) {
+            let input = document.getElementById(inputId);
+            let filter = input.value.toUpperCase();
+            let table = document.getElementById(tableId);
+            let tr = table.getElementsByTagName("tr");
+
+            for (let i = 1; i < tr.length; i++) {
+                let tds = tr[i].getElementsByTagName("td");
+                let show = false;
+                for (let j = 0; j < tds.length; j++) {
+                    if (tds[j] && tds[j].innerText.toUpperCase().indexOf(filter) > -1) {
+                        show = true;
+                        break;
+                    }
+                }
+                tr[i].style.display = show ? "" : "none";
+            }
+        }
+
+        function addRow(tbodyId, type) {
+            const tbody = document.getElementById(tbodyId);
+            const row = tbody.insertRow();
+            const now = new Date().toISOString().split('T')[0];
+
+            const data = type === 'wholesaler'
+                ? ["", "", "", "", "", "", "", "", ""]
+                : ["", "", "", "", "", "", "", ""];
+
+            for (let i = 0; i < data.length; i++) {
+                const cell = row.insertCell();
+                const input = document.createElement("input");
+                input.value = data[i];
+                input.className = "form-control form-control-sm";
+                cell.appendChild(input);
+            }
+
+            const actionCell = row.insertCell();
+            actionCell.className = "action-buttons";
+
+            const saveBtn = document.createElement("button");
+            saveBtn.innerText = "Save";
+            saveBtn.className = "btn btn-success btn-sm";
+            saveBtn.onclick = function () {
+                for (let i = 0; i < data.length; i++) {
+                    const cell = row.cells[i];
+                    cell.textContent = cell.firstChild.value;
+                }
+                actionCell.innerHTML = '';
+                addActionButtons(row);
+            };
+
+            actionCell.appendChild(saveBtn);
+        }
+
+        function addActionButtons(row) {
+            const editBtn = document.createElement("button");
+            editBtn.innerText = "Edit";
+            editBtn.className = "btn btn-primary btn-sm";
+            editBtn.onclick = function () {
+                for (let i = 0; i < row.cells.length - 1; i++) {
+                    const cell = row.cells[i];
+                    const input = document.createElement("input");
+                    input.value = cell.textContent;
+                    input.className = "form-control form-control-sm";
+                    cell.innerHTML = '';
+                    cell.appendChild(input);
+                }
+                const saveBtn = document.createElement("button");
+                saveBtn.innerText = "Save";
+                saveBtn.className = "btn btn-success btn-sm";
+                saveBtn.onclick = function () {
+                    for (let i = 0; i < row.cells.length - 1; i++) {
+                        const cell = row.cells[i];
+                        cell.textContent = cell.firstChild.value;
+                    }
+                    row.cells[row.cells.length - 1].innerHTML = '';
+                    addActionButtons(row);
+                };
+                row.cells[row.cells.length - 1].innerHTML = '';
+                row.cells[row.cells.length - 1].appendChild(saveBtn);
+            };
+
+            const deleteBtn = document.createElement("button");
+            deleteBtn.innerText = "Delete";
+            deleteBtn.className = "btn btn-danger btn-sm";
+            deleteBtn.onclick = function () {
+                row.remove();
+            };
+
+            const actionCell = row.cells[row.cells.length - 1];
+            actionCell.appendChild(editBtn);
+            actionCell.appendChild(deleteBtn);
+        }
+    </script>
+</body>
+
+</html>
