@@ -1,134 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nutritionist Meat Product Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        /* Table basic style */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            padding: 10px;
-            border: 1px solid #ccc;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        .table-section {
-            margin-top: 30px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nutritionist Dashboard</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f5f7fa;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .dashboard {
+      max-width: 900px;
+      margin: auto;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: #2c3e50;
+    }
+
+    .section {
+      margin-top: 40px;
+    }
+
+    input, button {
+      padding: 10px;
+      width: 100%;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .recommendation-box {
+      background-color: #e9f7ef;
+      border-left: 5px solid #28a745;
+      padding: 15px;
+      margin-top: 10px;
+      border-radius: 5px;
+      white-space: pre-line;
+      font-size: 15px;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <h1>Nutritionist Dashboard</h1>
-        <ul>
-            <li><a href="#" id="meatLookupLink">Meat Lookup</a></li>
-            <li><a href="#" id="demandTrendsLink">Demand Trends</a></li>
-            <li><a href="#" id="clientsLink">Clients</a></li>
-            <li><a href="#" id="logoutLink">Logout</a></li>
-        </ul>
+  <div class="dashboard">
+    <h1>Nutritionist Recommendation Dashboard</h1>
+
+    <div class="section">
+      <h2>Protein vs Fat in Meat Types</h2>
+      <canvas id="meatChart"></canvas>
     </div>
 
-    <!-- Main Content -->
-    <div class="main-content">
-        <div class="content" id="content">
-            <h2>Welcome to the Meat Product Dashboard</h2>
-            <p class="welcome-text">Explore meat product data, analyze consumer demand trends, or manage your clients with ease.</p>
-            
-            <div class="homepage-grid">
-                <div class="homepage-card">
-                    <img src="../images/beef_png.png" alt="Beef">
-                </div>
-                <div class="homepage-card">
-                    <img src="../images/chicken_png.jpg" alt="Chicken">
-                </div>
-                <div class="homepage-card">
-                    <img src="../images/mutton_png.jpg" alt="mutton">
-                </div>
-            </div>
-
-            <!-- Added Nutritionist Information Table -->
-            <div class="table-section">
-                <h3>Nutritionist Information</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Specialization</th>
-                            <th>Contact</th>
-                            <th>Email</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Dr. Sara Khan</td>
-                            <td>Meat Nutrition Specialist</td>
-                            <td>+1234567890</td>
-                            <td>sara.khan@example.com</td>
-                        </tr>
-                        <tr>
-                            <td>Mr. John Doe</td>
-                            <td>Animal Protein Expert</td>
-                            <td>+0987654321</td>
-                            <td>john.doe@example.com</td>
-                        </tr>
-                        <tr>
-                            <td>Dr. Emily Watson</td>
-                            <td>Poultry Nutritionist</td>
-                            <td>+1122334455</td>
-                            <td>emily.watson@example.com</td>
-                        </tr>
-                        <tr>
-                            <td>Ms. Ayesha Malik</td>
-                            <td>Food Safety Consultant</td>
-                            <td>+6677889900</td>
-                            <td>ayesha.malik@example.com</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <!-- End Nutritionist Table -->
-
-        </div>
+    <div class="section">
+      <h2>BMI-Based Consumer Recommendation</h2>
+      <label for="bmi">Enter BMI:</label>
+      <input type="number" id="bmi" placeholder="e.g. 22.5" />
+      <button onclick="recommendByBMI()">Get Advice</button>
+      <div id="bmiAdvice" class="recommendation-box"></div>
     </div>
 
-    <script src="script.js"></script>
+    <div class="section">
+      <h2>Farmer Supply Recommendation</h2>
+      <button onclick="recommendSupply()">Suggest What to Supply</button>
+      <div id="supplyAdvice" class="recommendation-box"></div>
+    </div>
+  </div>
 
-    <script type="text/javascript"> 
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function loadFileData(filename) {
-            if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-                try {
-                    var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                    var firstSheetName = workbook.SheetNames[0];
-                    var worksheet = workbook.Sheets[firstSheetName];
-
-                    // Convert sheet to JSON to filter blank rows
-                    var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                    var filteredData = jsonData.filter(row =>
-                        row.some(cell => cell !== '' && cell !== null && cell !== undefined)
-                    );
-
-                    var csv = XLSX.utils.aoa_to_sheet(filteredData);
-                    csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                    return csv;
-                } catch (e) {
-                    console.error(e);
-                    return "";
-                }
+  <script>
+    // Chart showing protein vs fat
+    const ctx = document.getElementById('meatChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Chicken (Breast)', 'Beef (Lean)', 'Duck (Skinless)', 'Mutton (Lean)'],
+        datasets: [
+          {
+            label: 'Protein (%)',
+            data: [31, 26, 27, 25],
+            backgroundColor: 'rgba(75, 192, 192, 0.7)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+          },
+          {
+            label: 'Fat (%)',
+            data: [3.6, 10, 8, 9],
+            backgroundColor: 'rgba(255, 99, 132, 0.7)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Protein vs Fat Content in Different Meats',
+            font: {
+              size: 18
             }
-            return gk_fileData[filename] || "";
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Percentage (%)'
+            }
+          }
         }
-    </script>
+      }
+    });
+
+    // BMI Recommendation
+    function recommendByBMI() {
+      const bmi = parseFloat(document.getElementById("bmi").value);
+      let advice = "👩‍⚕️ Nutritionist Advice:\n\n";
+
+      if (isNaN(bmi) || bmi <= 0) {
+        advice = "⚠️ Please enter a valid BMI.";
+      } else if (bmi < 18.5) {
+        advice += `🔸 Status: Underweight\nYou should consume high-protein and moderate-fat meat.\n✅ Recommended: Duck, Mutton, Lean Beef.\n❌ Avoid: Only lean meat like chicken unless combined with fats.`;
+      } else if (bmi < 25) {
+        advice += `🔸 Status: Normal\nMaintain balance.\n✅ Recommended: Mix of Chicken, Beef, Duck.\n❌ Avoid: Too much fatty meat.`;
+      } else if (bmi < 30) {
+        advice += `🔸 Status: Overweight\nYou need low-fat, high-protein meat.\n✅ Recommended: Chicken breast, fish.\n❌ Avoid: Mutton, fatty beef.`;
+      } else {
+        advice += `🔸 Status: Obese\nStrict diet.\n✅ Recommended: Chicken breast, skinless fish.\n❌ Avoid: Duck, Beef, Mutton.`;
+      }
+
+      document.getElementById("bmiAdvice").innerText = advice;
+    }
+
+    // Farmer Supply Suggestion
+    function recommendSupply() {
+      const advice = `📦 Farmer Meat Supply Suggestion:\n\n✅ Supply more Chicken — suits all BMI levels and is high-protein, low-fat.\n📈 Moderate demand for Duck and Lean Beef — especially for underweight and athletic people.\n❌ Reduce supply of Mutton and fatty beef in high-obesity regions.\n📊 Tip: Coordinate with health centers for regional health data.`;
+
+      document.getElementById("supplyAdvice").innerText = advice;
+    }
+  </script>
 </body>
 </html>
