@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width= device-width, initial-scale=1.0"/>
+  <title> Wholesaler Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+ 
+
+</head>
+<body class="bg-gray-800"></body>
+
+
+
+  <div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-gray-900 shadow-lg">
+      <div class=" text-gray-500 text-2xl border-b"> Meat King  </div>
+      <nav class="p-4">
+        <ul class="space-y-2">
+          <li><button onclick="showSection('dashboard')" class="text-white text-left px-4 py-2 rounded hover:bg-gray-800">Dashboard</button></li>
+          <li><button onclick="showSection('purchases')" class="text-white text-left px-4 py-2 rounded hover:bg-gray-800">Purchase Records</button></li>
+          <li><button onclick="showSection('storage')" class="text-white text-left px-4 py-2 rounded hover:bg-gray-800">Cold Storage Info</button></li>
+          <li><button onclick="showSection('sales')" class="text-white text-left px-4 py-2 rounded hover:bg-gray-800">Sales Records</button></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main content area -->
+    <div class="flex-1 flex flex-col">
+      
+      <!-- Top Profile Bar -->
+      <header class="bg-gray-800 shadow p-4 flex justify-between items-center">
+        <h1 class="text-white font-semibold">Wholesaler Dashboard</h1>
+        <div class="flex items-center space-x-6">
+          <div class="text-right">
+            <div class="font-bold text-white">AFSANA ISLAM</div>
+            <div class="text-sm text-gray-500">Wholesaler ID: W12</div>
+          </div>
+          <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded">Logout</button>
+        </div>
+      </header>
+
+      <!-- Main Body -->
+      <main class="flex-1 p-6 overflow-y-auto">
+
+        <!-- Dashboard -->
+        <section id="dashboard" class="content-section">
+          <h2 class="text-white font-bold mb-4">Dashboard Overview</h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-gray-200 p-4 shadow rounded">
+              <h3 class="text-lg font-semibold">Total Purchases</h3>
+              <p class="text-2xl font-bold text-gray800 ">120</p>
+            </div>
+            <div class="bg-gray-200 p-4 shadow rounded">
+              <h3 class="text-lg font-semibold">Storage Used</h3>
+              <p class="text-2xl font-bold text-gray800">75%</p>
+            </div>
+            <div class="bg-gray-200 p-4 shadow rounded">
+              <h3 class="text-lg font-semibold">Total Sales</h3>
+              <p class="text-2xl font-bold text-gray800">95</p>
+            </div>
+          </div>
+
+        <!-- Dashboard Form -->
+        
+        </section>
+
+        <!-- Purchase Records -->
+        <section id="purchases" class="content-section hidden">
+          <h2 class="text-white font-bold mb-4">Purchase Records</h2>
+          <table class="min-w-full bg-gray-200 rounded shadow mb-6">
+            <thead>
+              <tr class="bg-gray-200 text-left">
+                <th class="p-3">Purchase ID</th>
+                <th class="p-3">Product ID</th>
+                <th class="p-3">Farmer ID</th>
+                <th class="p-3">Quantity (kg)</th>
+                <th class="p-3">Purchase Date</th>
+                <th class="p-3">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="purchase-table-body">
+              <tr class="border-t">
+                <td class="p-3">P001</td>
+                <td class="p-3">02</td>
+                <td class="p-3"> 44</td>
+                <td class="p-3">500</td>
+                <td class="p-3">2025-04-10</td>
+                <td class="p-3 space-x-2">
+                  <button onclick="editRow(this)" class="text-blue-600 hover:underline">Edit</button>
+                  <button onclick="deleteRow(this)" class="text-red-600 hover:underline">Delete</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        
+          <!-- Add Purchase Record Form -->
+          <div class="bg-gray-200 p-6 shadow rounded max-w-2xl">
+            <h3 class="text-xl font-semibold mb-4">Add Purchase Record</h3>
+            <form id="purchase-form" class="space-y-4" onsubmit="addPurchase(event)">
+              <div class="grid grid-cols-2 gap-4">
+                <input type="text" id="purchaseId" class="border p-2 rounded" placeholder="Purchase ID" required />
+                <input type="text" id="meatType" class="border p-2 rounded" placeholder="Product ID" required />
+                <input type="text" id="farmerName" class="border p-2 rounded" placeholder="Farmer ID" required />
+                <input type="number" id="quantity" class="border p-2 rounded" placeholder="Quantity (kg)" required />
+              </div>
+              <input type="date" id="purchaseDate" class="border p-2 rounded w-full" required />
+              <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Add Record</button>
+            </form>
+          </div>
+        </section>
+  
+
+        <!-- Cold Storage Info -->
+        <section id="storage" class="content-section hidden">
+          <h2 class="text-white font-bold mb-4">Cold Storage Info</h2>
+          <table class="min-w-full bg-white rounded shadow mb-6">
+            <thead>
+              <tr class="bg-gray-200 text-left">
+                <th class="p-3">Storage ID</th>
+                <th class="p-3">Location</th>
+                <th class="p-3">Capacity (kg)</th>
+                <th class="p-3">Temperature (°C)</th>
+                <th class="p-3">Status</th>
+                <th class="p-3">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="storage-table-body">
+              <!-- Example row -->
+              <tr class="border-t">
+                <td class="p-3">S001</td>
+                <td class="p-3">Narayanganj</td>
+                <td class="p-3">1000</td>
+                <td class="p-3">4</td>
+                <td class="p-3">Active</td>
+                <td class="p-3 space-x-2">
+                  <button onclick="editStorage(this)" class="text-blue-600 hover:underline">Edit</button>
+                  <button onclick="deleteRow(this)" class="text-red-600 hover:underline">Delete</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        
+          <!-- Add Storage Form -->
+          <div class="bg-gray-200 p-6 shadow rounded max-w-2xl">
+            <h3 class="text-xl font-semibold mb-4">Add Storage Info</h3>
+            <form id="storage-form" class="space-y-4" onsubmit="addStorage(event)">
+              <div class="grid grid-cols-2 gap-4">
+                <input type="text" id="storageId" class="border p-2 rounded" placeholder="Storage ID" required />
+                <input type="text" id="location" class="border p-2 rounded" placeholder="Location" required />
+                <input type="number" id="capacity" class="border p-2 rounded" placeholder="Capacity (kg)" required />
+                <input type="number" id="temperature" class="border p-2 rounded" placeholder="Temperature (°C)" required />
+              </div>
+              <select id="status" class="border p-2 rounded w-full" required>
+                <option value="">Select Status</option>
+                <option value="Operational">Active</option>
+                <option value="Under Maintenance">Inactive</option>
+              </select>
+              <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Add Storage</button>
+            </form>
+          </div>
+        </section>
+        <!-- Sales Records -->
+        <section id="sales" class="content-section hidden">
+          <h2 class="text-white font-bold mb-4">Sales Records</h2>
+          <table class="min-w-full bg-white rounded shadow mb-6">
+            <thead>
+              <tr class="bg-gray-200 text-left">
+                <th class="p-3">Retailer ID</th>
+                <th class="p-3"> Product ID</th>
+                <th class="p-3"> Retail Price(Per kg)</th>
+                <th class="p-3">Quantity (kg)</th>
+                <th class="p-3">Sales Date</th>
+                <th class="p-3">Actions</th>
+
+              </tr>
+            </thead>
+            <tbody id="sales-table-body">
+              <!-- Example row -->
+              <tr class="border-t">
+                <td class="p-3">001</td>
+                <td class="p-3"> 002</td>
+                <td class="p-3">600</td>
+                <td class="p-3">200</td>
+                <td class="p-3">2025-04-12</td>
+                <td class="p-3 space-x-2">
+                  <button onclick="editSales(this)" class="text-blue-600 hover:underline">Edit</button>
+                  <button onclick="deleteRow(this)" class="text-red-600 hover:underline">Delete</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        
+          <!-- Add Sales Record Form -->
+          <div class="bg-gray-200 p-6 shadow rounded max-w-2xl">
+            <h3 class="text-xl font-semibold mb-4">Add Sales Record</h3>
+            <form id="sales-form" class="space-y-4" onsubmit="addSales(event)">
+              <div class="grid grid-cols-2 gap-4">
+                <input type="text" id="RetailerID" class="border p-2 rounded" placeholder="Retailer ID" required />
+                <input type="text" id="ProductID" class="border p-2 rounded" placeholder="Product ID" required />
+                <input type="text" id="ProductID" class="border p-2 rounded" placeholder="Retail Price" required />
+                <input type="number" id="salesQuantity" class="border p-2 rounded" placeholder="Quantity (kg)" required />
+              
+              </div>
+              <input type="date" id="salesDate" class="border p-2 rounded w-full" required />
+              <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">Add Sales</button>
+            </form>
+          </div>
+        </section>
+  <!-- Section Switch Logic -->
+  <script>
+    function showSection(sectionId) {
+      document.querySelectorAll('.content-section').forEach(section => {
+        section.classList.add('hidden');
+      });
+      document.getElementById(sectionId).classList.remove('hidden');
+    }
+
+    function addStorage(event) {
+  event.preventDefault();
+
+
+  const storageId = document.getElementById("storageId").value;
+  const location = document.getElementById("location").value;
+  const capacity = document.getElementById("capacity").value;
+  const temperature = document.getElementById("temperature").value;
+  const status = document.getElementById("status").value;
+
+  const table = document.getElementById("storage-table-body");
+  const row = document.createElement("tr");
+  row.classList.add("border-t");
+
+  row.innerHTML = `
+    <td class="p-3">${storageId}</td>
+    <td class="p-3">${location}</td>
+    <td class="p-3">${capacity}</td>
+    <td class="p-3">${temperature}</td>
+    <td class="p-3">${status}</td>
+    <td class="p-3 space-x-2">
+      <button onclick="editStorage(this)" class="text-blue-600 hover:underline">Edit</button>
+      <button onclick="deleteRow(this)" class="text-red-600 hover:underline">Delete</button>
+    </td>
+  `;
+
+  table.appendChild(row);
+  document.getElementById("storage-form").reset();
+}
+
+function editStorage(button) {
+  const row = button.closest("tr");
+  const cells = row.querySelectorAll("td");
+
+  document.getElementById("storageId").value = cells[0].textContent;
+  document.getElementById("location").value = cells[1].textContent;
+  document.getElementById("capacity").value = cells[2].textContent;
+  document.getElementById("temperature").value = cells[3].textContent;
+  document.getElementById("status").value = cells[4].textContent;
+
+  row.remove();
+}
+
+function addSales(event) {
+  event.preventDefault();
+
+  const salesId = document.getElementById("RetailerId").value;
+  const retailerName = document.getElementById("ProductID").value;
+  const meatType = document.getElementById("RetailPrice").value;
+  const quantity = document.getElementById("salesQuantity").value;
+  const salesDate = document.getElementById("salesDate").value;
+
+  const table = document.getElementById("sales-table-body");
+  const row = document.createElement("tr");
+  row.classList.add("border-t");
+
+  row.innerHTML = `
+    <td class="p-3">${retailerId}</td>
+    <td class="p-3">${productID}</td>
+    <td class="p-3">${RetailPrice}</td>
+    <td class="p-3">${quantity}</td>
+
+    <td class="p-3 space-x-2">
+      <button onclick="editSales(this)" class="text-blue-600 hover:underline">Edit</button>
+      <button onclick="deleteRow(this)" class="text-red-600 hover:underline">Delete</button>
+    </td>
+  `;
+
+  table.appendChild(row);
+  document.getElementById("sales-form").reset();
+}
+
+function editSales(button) {
+  const row = button.closest("tr");
+  const cells = row.querySelectorAll("td");
+
+  document.getElementById("retailerId").value = cells[0].textContent;
+  document.getElementById("ProductID").value = cells[1].textContent;
+  document.getElementById("RetailPrice").value = cells[2].textContent;
+  document.getElementById("salesQuantity").value = cells[3].textContent;
+  document.getElementById("salesDate").value = cells[4].textContent;
+
+  row.remove();
+}
+function addPurchase(event) {
+  event.preventDefault();
+
+  const purchaseId = document.getElementById("purchaseId").value;
+  const meatType = document.getElementById("ProductID").value;
+  const farmerName = document.getElementById("RetailerID").value;
+  const quantity = document.getElementById("quantity").value;
+  const purchaseDate = document.getElementById("purchaseDate").value;
+
+  const table = document.getElementById("purchase-table-body");
+  const row = document.createElement("tr");
+  row.classList.add("border-t");
+
+  row.innerHTML = `
+    <td class="p-3">${purchaseId}</td>
+    <td class="p-3">${ProductID}</td>
+    <td class="p-3">${farmerID}</td>
+    <td class="p-3">${quantity}</td>
+    <td class="p-3">${purchaseDate}</td>
+    <td class="p-3 space-x-2">
+      <button onclick="editRow(this)" class="text-blue-600 hover:underline">Edit</button>
+      <button onclick="deleteRow(this)" class="text-red-600 hover:underline">Delete</button>
+    </td>
+  `;
+
+  table.appendChild(row);
+  document.getElementById("purchase-form").reset();
+}
+
+function deleteRow(button) {
+  button.closest("tr").remove();
+}
+
+function editRow(button) {
+  const row = button.closest("tr");
+  const cells = row.querySelectorAll("td");
+
+  document.getElementById("purchaseId").value = cells[0].textContent;
+  document.getElementById("ProductID").value = cells[1].textContent;
+  document.getElementById("RetailerID").value = cells[2].textContent;
+  document.getElementById("quantity").value = cells[3].textContent;
+  document.getElementById("purchaseDate").value = cells[4].textContent;
+
+  row.remove();
+}
+
+  </script>
+</body>
+</html>
