@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutritionist Meat Product Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Table basic style */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .table-section {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h1>Nutritionist Dashboard</h1>
+        <ul>
+            <li><a href="#" id="meatLookupLink">Meat Lookup</a></li>
+            <li><a href="#" id="demandTrendsLink">Demand Trends</a></li>
+            <li><a href="#" id="clientsLink">Clients</a></li>
+            <li><a href="#" id="logoutLink">Logout</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="content" id="content">
+            <h2>Welcome to the Meat Product Dashboard</h2>
+            <p class="welcome-text">Explore meat product data, analyze consumer demand trends, or manage your clients with ease.</p>
+            
+            <div class="homepage-grid">
+                <div class="homepage-card">
+                    <img src="../images/beef_png.png" alt="Beef">
+                </div>
+                <div class="homepage-card">
+                    <img src="../images/chicken_png.jpg" alt="Chicken">
+                </div>
+                <div class="homepage-card">
+                    <img src="../images/mutton_png.jpg" alt="mutton">
+                </div>
+            </div>
+
+            <!-- Added Nutritionist Information Table -->
+            <div class="table-section">
+                <h3>Nutritionist Information</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Specialization</th>
+                            <th>Contact</th>
+                            <th>Email</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Dr. Sara Khan</td>
+                            <td>Meat Nutrition Specialist</td>
+                            <td>+1234567890</td>
+                            <td>sara.khan@example.com</td>
+                        </tr>
+                        <tr>
+                            <td>Mr. John Doe</td>
+                            <td>Animal Protein Expert</td>
+                            <td>+0987654321</td>
+                            <td>john.doe@example.com</td>
+                        </tr>
+                        <tr>
+                            <td>Dr. Emily Watson</td>
+                            <td>Poultry Nutritionist</td>
+                            <td>+1122334455</td>
+                            <td>emily.watson@example.com</td>
+                        </tr>
+                        <tr>
+                            <td>Ms. Ayesha Malik</td>
+                            <td>Food Safety Consultant</td>
+                            <td>+6677889900</td>
+                            <td>ayesha.malik@example.com</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- End Nutritionist Table -->
+
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+    <script type="text/javascript"> 
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function loadFileData(filename) {
+            if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+                try {
+                    var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                    var firstSheetName = workbook.SheetNames[0];
+                    var worksheet = workbook.Sheets[firstSheetName];
+
+                    // Convert sheet to JSON to filter blank rows
+                    var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                    var filteredData = jsonData.filter(row =>
+                        row.some(cell => cell !== '' && cell !== null && cell !== undefined)
+                    );
+
+                    var csv = XLSX.utils.aoa_to_sheet(filteredData);
+                    csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                    return csv;
+                } catch (e) {
+                    console.error(e);
+                    return "";
+                }
+            }
+            return gk_fileData[filename] || "";
+        }
+    </script>
+</body>
+</html>
